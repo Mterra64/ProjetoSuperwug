@@ -21,7 +21,7 @@ void test_population_management();
 int main() {
     printf("--- Iniciando Testes do Projeto Superwug ---\n\n");
     
-    // Testa Q1, Q2 e Q3
+   
     test_create_wug(); 
     test_rank_and_features();
     
@@ -122,9 +122,9 @@ void test_population_management() {
     wugs_to_insert[8] = create_wug(genome_R1, M);
     wugs_to_insert[9] = create_wug(genome_R2, F);
 
-    // ... ContinuaC'C#o do cC3digo APCS a criaC'C#o dos 10 wugs ...
 
-// 2. Tenta inserir os 10 wugs (Q4)
+
+
     for (i = 0; i < 10; i++) {
     bool inserted = insert_ranked(population, wugs_to_insert[i], &size, CAPACITY);
     printf("Tentativa %d (Rank %d): %s\n", 
@@ -134,7 +134,7 @@ void test_population_management() {
     }
 }
 
-// 3. Imprime a populaC'C#o e o relatC3rio
+
 printf("\n--- PopulaC'C#o Final (Q5: Ordenada por Rank) ---\n");
 print_population(population, size);
 
@@ -142,20 +142,18 @@ int super_wugs = report_population(population, size);
 
 printf("\nTotal de Superwugs Retornado (Q6): %d\n", super_wugs);
 
-// VerificaC'C#o de sucesso
+
 if (size == CAPACITY && super_wugs == 3) {
     printf("PASS: Gerenciamento de PopulaC'C#o (Q4, Q5, Q6) realizado com sucesso.\n");
 } else {
     printf("FAIL: Erro no gerenciamento da PopulaC'C#o. Tamanho: %d, Superwugs: %d.\n", size, super_wugs);
 }
 
-// 4. Limpeza de MemC3ria
+
 for (i = 0; i < size; i++) {
     free(population[i]); 
 }
 printf("MemC3ria da populaC'C#o final liberada.\n");
 printf("----------------------------------------\n");
 
-} // <-- CHAVE DE FECHAMENTO DE test_population_management()
-
-// ... e a chave de fechamento final de main()
+} 
