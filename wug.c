@@ -24,10 +24,10 @@ wug_t* create_wug(int genome[16], gender_t g) {
 
 
 void genome2features(const int genome[16], int features[4]) {
-  // Genoma Superwug: 1011100101001100
+  
   const int SUPER_GENOME[16] = {1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0};
   
-  // Mapeamento de Zonas: I(0), B(1), F(2), V(3)
+
   const int ZONES[4][4] = {
     {0, 2, 7, 14}, // InteligC*ncia
     {1, 6, 9, 10}, // Beleza
@@ -54,7 +54,7 @@ void genome2features(const int genome[16], int features[4]) {
 int rank(const wug_t* w) {
   int features[4];
   
-  // Depende da Q2
+  
   genome2features(w->genome, features); 
 
   int rank_count = 0;
@@ -75,7 +75,7 @@ bool insert_ranked(wug_t** population, wug_t* w, int* size, int capacity) {
   
   if (*size == capacity) {
     int last_wug_rank = rank(population[*size - 1]);
-    // Se o rank do novo wug C) menor ou igual ao C:ltimo, C) ignorado.
+
     if (wug_rank <= last_wug_rank) {
       return false; // Wug ignorado
     }
@@ -151,7 +151,7 @@ int report_population(wug_t** population, const int size) {
     feature_counts[bits]++;
 
     
-    if (bits == 15) { // 15 em decimal C) 1111 em binC!rio
+    if (bits == 15) { 
       super_wug_count++;
     }
   }
