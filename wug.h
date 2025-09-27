@@ -8,11 +8,7 @@
 #include "util.h"
 
 /* dado um array de int (com 0s ou 1s) e um gender, criar um wug e
-   retorna seu endereço. */
-
-wug_t* create_wug(int genome[16], gender_t g);
-
-
+wug_t* create_wug(const int genome[16], gender_t g) {
 /* funções auxiliares para imprimir um wug e imprimir a população
    atual de wugs. Estas funções serão úteis para debug. */
 

@@ -75,31 +75,118 @@ int rank(const wug_t* w) {
 
 
 /*
- * ImplementaC'C#o da QuestC#o 4: Insere um wug na populaC'C#o (stub temporC!rio).
+ * ImplementaC'C#o da QuestC#o 4: Adiciona um wug C  populaC'C#o, mantendo a ordem (rank decrescente)
+ * e respeitando a capacidade mC!xima.
  */
 bool insert_ranked(wug_t** population, wug_t* w, int* size, int capacity) {
-    // CC3digo virC! aqui quando Q4 for implementada
-    return false;
+  int wug_rank = rank(w);
+  
+  // 1. Caso de exclusC#o: Se a populaC'C#o estiver cheia,
+  // verifica se o novo wug nC#o tem rank suficiente.
+  if (*size == capacity) {
+    int last_wug_rank = rank(population[*size - 1]);
+    // Se o rank do novo wug C) menor ou igual ao C:ltimo, C) ignorado.
+    if (wug_rank <= last_wug_rank) {
+      return false; // Wug ignorado
+    }
+    
+    // Libera a memC3ria do wug de menor rank que serC! substituC-do.
+    free(population[*size - 1]);
+    (*size)--; // Reduz o tamanho temporariamente para a inserC'C#o
+  }
+
+  // 2. Encontra a posiC'C#o correta (busca o primeiro wug com rank menor)
+  int i = *size - 1;
+  while (i >= 0 && rank(population[i]) < wug_rank) {
+    // Move o wug atual para a direita para abrir espaC'o
+    population[i + 1] = population[i];
+    i--;
+  }
+
+  // 3. Insere o novo wug na posiC'C#o encontrada
+  population[i + 1] = w;
+
+  // 4. Atualiza o tamanho
+  (*size)++;
+
+  return true; // Wug inserido
 }
 
 /*
- * ImplementaC'C#o da QuestC#o 5: Imprime os dados de um wug (stub temporC!rio).
+ * ImplementaC'C#o da QuestC#o 5: Imprime os dados de um wug.
  */
 void print_wug(wug_t *w) {
-    // CC3digo virC! aqui quando Q5 for implementada
+  int features[4];
+  genome2features(w->genome, features); 
+  
+  char* genome_str = array_string(w->genome, 16);
+  char* features_str = array_string(features, 4);
+
+  // Exemplo de impressC#o do wug
+  printf("%c %s %s %d", w->gender, genome_str, features_str, rank(w));
+
+  free(genome_str);
+  free(features_str);
 }
 
 /*
- * ImplementaC'C#o da QuestC#o 5: Imprime toda a populaC'C#o (stub temporC!rio).
+ * ImplementaC'C#o da QuestC#o 5: Imprime todos os wugs da populaC'C#o em ordem.
  */
 void print_population(wug_t** population, const int size) {
-    // CC3digo virC! aqui quando Q5 for implementada
+  printf("PopulaC'C#o Atual (Tamanho: %d):\n", size);
+  printf("Ordem | GC*nero | Genoma | Features | Rank\n");
+  for (int i = 0; i < size; i++) {
+    printf("%4d | %c | ", i, population[i]->gender);
+    
+    // Obtenha os dados para impressC#o em coluna
+    int features[4];
+    genome2features(population[i]->genome, features); 
+    char* genome_str = array_string(population[i]->genome, 16);
+    char* features_str = array_string(features, 4);
+    
+    printf("%s | %s | %d\n", genome_str, features_str, rank(population[i]));
+    
+    free(genome_str);
+    free(features_str);
+  }
 }
 
+
 /*
- * ImplementaC'C#o da QuestC#o 6: Conta os padrC5es de features e o nC:mero de superwugs (stub temporC!rio).
+ * ImplementaC'C#o da QuestC#o 6: Conta os padrC5es de features e o nC:mero de superwugs.
  */
 int report_population(wug_t** population, const int size) {
-    // CC3digo virC! aqui quando Q6 for implementada
-    return 0;
+  int super_wug_count = 0;
+  // Array para contar a frequC*ncia de cada um dos 16 padrC5es de features (2^4 = 16)
+  int feature_counts[16] = {0}; 
+
+  for (int i = 0; i < size; i++) {
+    int features[4];
+    genome2features(population[i]->genome, features);
+    
+    // Converte o array de features em um C:nico valor (0 a 15) para indexar a contagem
+    uint8_t bits = features2bits(features); 
+    feature_counts[bits]++;
+
+    // Verifica se C) um superwug (todas as features = 1)
+    if (bits == 15) { // 15 em decimal C) 1111 em binC!rio
+      super_wug_count++;
+    }
+  }
+
+  printf("\n-- PadrC5es de CaracterC-sticas na PopulaC'C#o (Report) --\n");
+  for (int i = 0; i < 16; i++) {
+    if (feature_counts[i] > 0) {
+      int features[4];
+      // Converte o C-ndice de volta para o array de features para a impressC#o
+      bits2features((uint8_t)i, features); 
+      
+      char* features_str = array_string(features, 4);
+      printf("PadrC#o %s: %d wug(s)\n", features_str, feature_counts[i]);
+      free(features_str);
+    }
+  }
+
+  return super_wug_count;
 }
+
